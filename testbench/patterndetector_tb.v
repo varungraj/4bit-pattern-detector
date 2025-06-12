@@ -74,7 +74,6 @@ module pattern_detector_tb;
 
         //--------------------------------------------------
         // Send input stream: 1 0 0 0 1 0 0 0 0 1 1
-        // overlapping condition
         //--------------------------------------------------
             input_valid = 1'b1;
 
@@ -128,13 +127,41 @@ module pattern_detector_tb;
 
         #10 input_valid = 1'b0;
 
+        //--------------------------------------------------
+        // Change pattern to 4'b1001
+        //--------------------------------------------------
+        #20 load_pattern = 1'b1;
+            pattern = 4'b1001;
+        #10 load_pattern = 1'b0;
+
+        //--------------------------------------------------
+        // Send input stream: 1 0 0 0 1 0 0 0 0 1 1
+        // overlapping condition
+        //--------------------------------------------------
+            input_valid = 1'b1;
+
+            data_in = 0; 
+        #10 data_in = 0; 
+        #10 data_in = 0; 
+        #10 data_in = 0; 
+        #10 data_in = 1; 
+        #10 data_in = 0; 
+        #10 data_in = 0; 
+        #10 data_in = 1; 
+        #10 data_in = 0;  
+        #10 data_in = 0; 
+        #10 data_in = 1;  
+
+        #10 input_valid = 1'b0;
+
+
         #10 rst = 1'b0;   //Apply reset
     end
 
     initial begin
        $shm_open("wave.shm");
        $shm_probe("ACTMF");
-       #500; 
+       #550; 
        $finish;
     end
 
